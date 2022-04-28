@@ -1,17 +1,15 @@
-from firebase import firebase
-
 import time
 import requests
 
 
-appid = "55dd60df12ee15e744b40650b2b72ce1"  # полученный при регистрации на OpenWeatherMap.org. Что-то вроде такого набора букв и цифр: "6d8e495ca73d5bbc1d6bf
+appid = "55dd60df12ee15e744b40650b2b72ce1"
 temp1 = 0
 windV = 0
 windD = ''
 deg = 0
 
 
-def get_wind_direction():
+def get_wind_direction(deg):
     res = requests.get("http://api.openweathermap.org/data/2.5/forecast",
                        params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
     data = res.json()
@@ -63,9 +61,10 @@ def request_current_weather(city_id):
         print("Exception (weather):", e)
         pass
 
-
+city_id = 501175
 # Прогноз
 def request_forecast(city_id):
+    
     try:
         res = requests.get("http://api.openweathermap.org/data/2.5/forecast",
                            params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
@@ -76,6 +75,8 @@ def request_forecast(city_id):
                   '{0:2.0f}'.format(i['wind']['speed']) + " м/с",
                   get_wind_direction(i['wind']['deg']),
                   i['weather'][0]['description'])
+        global deg
+        deg = i['wind']['deg']
     except Exception as e:
         print("Exception (forecast):", e)
         pass
@@ -85,44 +86,13 @@ def request_forecast(city_id):
 city_id = 501175
 
 
-# import sys
-#
-# if len(sys.argv) == 2:
-#     s_city_name = "Rostov-on-Don,RU"
-#     print("city:", s_city_name)
-#     city_id = get_city_id(s_city_name)
-# elif len(sys.argv) > 2:
-#     print('Enter name of city as one argument. For example: Petersburg,RU')
-#     sys.exit()
+import sys
 
-
-
-
-
-def firbase():
-    res = requests.get("http://api.openweathermap.org/data/2.5/forecast",
-                       params={'id': city_id, 'units': 'metric', 'lang': 'ru', 'APPID': appid})
-    data = res.json()
-    print(data)
-
-    windV = data['list'][0]['wind']['speed']
-    temp1 = data['list'][0]['main']['temp']
-    weth = data['list'][1]['weather'][0]['description']
-
-
-    myDB = firebase.FirebaseApplication("https://clever-mirror-default-rtdb.firebaseio.com/", None)
-    data1 = {
-        "Temp": temp1,
-        "Speed": windV,
-        "Direction": windD,
-        "Weather": weth
-    }
-    myDB.post('Temp', temp1)
-    myDB.post('Speed', windV)
-    myDB.post('Direction', windD)
-    myDB.post('Weather', weth)
-    time.sleep(10)
-
-
-get_wind_direction()
-firbase()
+if len(sys.argv) == 2:
+     s_city_name = "Rostov-on-Don,RU"
+     print("city:", s_city_name)
+     city_id = get_city_id(s_city_name)
+elif len(sys.argv) > 2:
+     print('Enter name of city as one argument. For example: Petersburg,RU')
+     sys.exit()
+request_forecast(city_id)
