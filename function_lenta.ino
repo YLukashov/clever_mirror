@@ -1,12 +1,11 @@
-#include <FastLED.h> // подключаем библиотеку
+#include <FastLED.h> 
 
-#define NUM_LEDS 100 // указываем количество светодиодов на ленте
-#define PIN 4                    // указываем пин для подключения ленты
+#define NUM_LEDS 100 
+#define PIN 15                  
 
 CRGB leds[NUM_LEDS];
 
 void setup() {
-   // основные настройки для адресной ленты
    Serial.begin(9600);
    FastLED.addLeds <WS2812B, PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
    FastLED.setBrightness(50);
@@ -21,7 +20,6 @@ void temp_lenta(int t){
   int coeff = diaposon_hue / (abs(min_t) + abs(max_t));
   int color = 0;
   color += abs(40 - t) * coeff;
-  //Serial.println(color);
   for(int i = 0; i < number_size_lenta; i++){
         leds[i].setHue(color);
   }
