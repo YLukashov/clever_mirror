@@ -35,20 +35,20 @@ void temp_lenta(int t) {
 }
 
 void print_lcd_display(int value) {
-  char *names[count_names] = {"Temperature:", "Wind_speed:", "Direction_of_the_wind:"};
+  char *names[count_names] = {"Temperature:", "Wind_speed:", "Direction_wind:"};
   lcd.begin(16, 2);
-  lcd.setCursor(2, 0);
+  lcd.setCursor(3, 0);
   lcd.print(names[count_touching]);
-  lcd.setCursor(2, 1);
+  lcd.setCursor(3, 1);
   lcd.print(value);
 }
 
 void dop(int value) {
-  if(count_touching == 0){
-     temp_lenta(value);
-    }
+  if (count_touching == 0) {
+    temp_lenta(value);
+  }
   print_lcd_display(value);
-  
+
 }
 
 void setup() {
@@ -62,24 +62,26 @@ void setup() {
 }
 
 void loop() {
-//  for (int i = -40; i <= 40; i++) {
-//    Serial.println(i);
-//    temp_lenta(i);
-//  }
-    if(count_touching == 0){
-      Serial.println("Введите температуру: ");
+  //  for (int i = -40; i <= 40; i++) {
+  //    Serial.println(i);
+  //    temp_lenta(i);
+  //  }
+  if (count_touching == 0) {
+    Serial.println("Введите температуру: ");
+  }
+  if (count_touching == 1) {
+    Serial.println("Введите скорость ветра: ");
+  }
+  if (count_touching == 2) {
+    Serial.println("Введите направление ветра: ");
+  }
+  if (Serial.available() > 0) {
+    int v = Serial.parseInt();
+    if (v != 0) {
+      Serial.println(v);
+      dop(v);
     }
-    if(count_touching == 1){
-      Serial.println("Введите скорость ветра: ");
-    }
-    if(count_touching == 2){
-      Serial.println("Введите направление ветра: ");
-    }
-    int v = 0; 
-    if (Serial.available() > 0) {
-       int v = Serial.read();
-       Serial.println(v);
-       dop(v);
-    }
-    delay(2000);
+
+  }
+  delay(2000);
 }
