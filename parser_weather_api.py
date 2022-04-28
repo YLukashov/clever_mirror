@@ -1,6 +1,7 @@
-appid = "55dd60df12ee15e744b40650b2b72ce1"# полученный при регистрации на OpenWeatherMap.org. Что-то вроде такого набора букв и цифр: "6d8e495ca73d5bbc1d6bf8ebd52c4123"
-
 import requests
+
+appid = "55dd60df12ee15e744b40650b2b72ce1"
+
 
 def get_wind_direction(deg):
     l = ['С ','СВ',' В','ЮВ','Ю ','ЮЗ',' З','СЗ']
@@ -72,7 +73,7 @@ if len(sys.argv) == 2:
     print("city:", s_city_name)
     city_id = get_city_id(s_city_name)
 elif len(sys.argv) > 2:
-    print('Enter name of city as one argument. For example: Petersburg,RU')
+    print('Enter name of city as one argument')
     sys.exit()
 
 request_forecast(city_id)
